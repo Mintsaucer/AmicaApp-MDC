@@ -7,13 +7,33 @@
     android:orientation="vertical"
     tools:context="com.lab.lauri.amicaapp.MainActivity">
 
+        <Button
+            android:id="@+id/language_english_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setLanguage"
+            android:layout_alignBaseline="@+id/language_finnish_button"
+            android:layout_alignBottom="@+id/language_finnish_button"
+            android:layout_alignEnd="@+id/textView" />
+
+        <Button
+            android:id="@+id/language_finnish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setLanguage"
+            android:layout_alignBaseline="@+id/tv_date"
+            android:layout_alignBottom="@+id/tv_date"
+            android:layout_alignStart="@+id/progressbar" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/restaurant_kotkanpoika"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textSize="30sp" />
+            android:id="@+id/textView" />
 
         <TextView
             android:id="@+id/tv_date"

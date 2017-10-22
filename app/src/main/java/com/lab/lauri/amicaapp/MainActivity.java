@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     EditText input_edit_text;
 
+    String language = "en";
+
     private ArrayList<String> names = new ArrayList<>();
     private ArrayAdapter adapter;
 
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchClicked(View view) {
         String input = input_edit_text.getText().toString();
-        url = "http://amica.fi/api/restaurant/menu/day?date=" + input + "&language=en&restaurantPageId=66287";
+        url = "http://amica.fi/api/restaurant/menu/day?date=" + input + "&language="+ language + "&restaurantPageId=66287";
         names.clear();
         new ParseTask().execute(url);
     }
@@ -131,5 +133,25 @@ public class MainActivity extends AppCompatActivity {
             list_view.setAdapter(adapter);
         }
         progressbar.setVisibility(View.INVISIBLE);
+    }
+
+    //Tsekkaa painetun napin ID:n, jonka mukaan asettaa kielen
+    public void setLanguage(View v)
+    {
+        switch (v.getId()){
+            case R.id.language_english_button:
+                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";
+                language = "en";
+                Log.d("Kieliasetus", "Englanti");
+                break;
+            case R.id.language_finnish_button:
+                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=fi&restaurantPageId=66287";
+                language = "fi";
+                Log.d("Kieliasetus", "Suomi");
+                break;
+            default:
+                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";
+                language = "en";
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,16 +7,33 @@
     android:orientation="vertical"
     tools:context="com.lab.lauri.amicaapp.MainActivity">
 
+<TableLayout>
+    <TextView
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/restaurant_kotkanpoika"
+        android:textSize="30sp"
+        android:id="@+id/textView" />
+</TableLayout>
+
+
+    <TableRow>
         <Button
+            android:layout_column="1"
+            android:layout_weight="1"
+            android:text="English"
             android:id="@+id/language_english_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="setLanguage"
-            android:layout_alignBaseline="@+id/language_finnish_button"
-            android:layout_alignBottom="@+id/language_finnish_button"
-            android:layout_alignEnd="@+id/textView" />
+            android:onClick="setLanguage" />
 
         <Button
+            android:layout_column="2"
+            android:layout_weight="1"
+            android:text="Suomi"
             android:id="@+id/language_finnish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,57 +41,60 @@
             android:layout_alignBaseline="@+id/tv_date"
             android:layout_alignBottom="@+id/tv_date"
             android:layout_alignStart="@+id/progressbar" />
+    </TableRow>
 
+    <TableRow>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/restaurant_kotkanpoika"
-            android:textSize="30sp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView" />
-
-        <TextView
+            android:layout_weight="1"
+            android:layout_column="1"
             android:id="@+id/tv_date"
+            android:hint="10.20.2017"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
-            android:layout_gravity="center_horizontal"
             android:textSize="20sp"/>
 
         <EditText
-            android:layout_width="130dp"
+            android:layout_weight="1"
+            android:layout_column="2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/yy_mm_dd"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="57dp"
             android:id="@+id/input_edit_text"/>
+    </TableRow>
 
+    <TableRow>
         <Button
+            android:layout_column="1"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="59dp"
+            android:layout_height="wrap_content"
             android:text="@string/search"
-            android:layout_marginStart="240dp"
             android:id="@+id/search_btn"
             android:onClick="searchClicked"/>
+    </TableRow>
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="93dp"
-            android:id="@+id/list_view"
-            android:padding="10dp"/>
+<TableLayout>
+
+    <ListView
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view" />
+</TableLayout>
+
+    <TableLayout>
 
         <ProgressBar
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:id="@+id/progressbar"/>
+    </TableLayout>
 
-</RelativeLayout>
+
+
+</TableLayout>
 

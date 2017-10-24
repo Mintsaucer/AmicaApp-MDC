@@ -1,12 +1,17 @@
 package com.lab.lauri.amicaapp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -30,7 +35,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 @EActivity
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     EditText input_edit_text;
 
     String language = "en";
+    String defaultDate;
 
     private ArrayList<String> names = new ArrayList<>();
     private ArrayAdapter adapter;
@@ -67,7 +75,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.get(Calendar.DATE);
+        //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä
+        int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
+        defaultDate = calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DATE);
+        defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, calendar.get(Calendar.DATE));
+        Log.d("DATE", defaultDate);
+        tv_date.setText(defaultDate);
+        input_edit_text.setText(defaultDate);
+
+        String input = input_edit_text.getText().toString();
+        url = "http://amica.fi/api/restaurant/menu/day?date=" + input + "&language="+ language + "&restaurantPageId=66287";
+
         adapter = new ArrayAdapter<>(this, R.layout.meal_list, names);
+        list_view.setAdapter(adapter);
         new ParseTask().execute(url);
     }
 
@@ -127,30 +149,30 @@ public class MainActivity extends AppCompatActivity {
         tv_date.setText(day + " " + date);
         Log.d("listArray size: ", String.valueOf(names.size()));
 
+        /*
         for (int i = 0; i < names.size(); i++)
         {
             // set adapter to listView
             list_view.setAdapter(adapter);
         }
+        */
+        adapter.notifyDataSetChanged(); // Adapteria täytyy virkistää muutoksen jälkeen, jotta näkymä päivittyy
         progressbar.setVisibility(View.INVISIBLE);
     }
 
-    //Tsekkaa painetun napin ID:n, jonka mukaan asettaa kielen
+    //Tsekkaa painetun napin ID:n, jonka mukaan asettaa kielen //TODO: Sharedpref, jotta sovellus muistaa asetuksen
     public void setLanguage(View v)
     {
         switch (v.getId()){
             case R.id.language_english_button:
-                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";
                 language = "en";
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
-                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=fi&restaurantPageId=66287";
                 language = "fi";
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
-                //url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";
                 language = "en";
         }
     }

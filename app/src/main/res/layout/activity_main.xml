@@ -20,28 +20,26 @@
 </TableLayout>
 
 
-    <TableRow>
-        <Button
-            android:layout_column="1"
-            android:layout_weight="1"
-            android:text="English"
-            android:id="@+id/language_english_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="setLanguage" />
+    <TableLayout>
+        <TableRow
+            android:layout_weight="1">
+            <Button
+                android:layout_gravity="start"
+                android:background="@drawable/language_english"
+                android:id="@+id/language_english_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setLanguage" />
 
-        <Button
-            android:layout_column="2"
-            android:layout_weight="1"
-            android:text="Suomi"
-            android:id="@+id/language_finnish_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="setLanguage"
-            android:layout_alignBaseline="@+id/tv_date"
-            android:layout_alignBottom="@+id/tv_date"
-            android:layout_alignStart="@+id/progressbar" />
-    </TableRow>
+            <Button
+                android:layout_gravity="end"
+                android:background="@drawable/language_finnish"
+                android:id="@+id/language_finnish_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="setLanguage" />
+        </TableRow>
+    </TableLayout>
 
     <TableRow>
         <TextView

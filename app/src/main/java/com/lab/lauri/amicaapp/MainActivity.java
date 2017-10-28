@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     ProgressBar progressbar;
     @ViewById
-    Button search_btn;
+    Button search_btn, language_english_button, language_finnish_button;
     @ViewById
     EditText input_edit_text;
 
@@ -92,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         tv_date.setText(defaultDate);
         input_edit_text.setText(defaultDate);
 
-        String input = input_edit_text.getText().toString();
-        url = "http://amica.fi/api/restaurant/menu/day?date=" + input + "&language="+ language + "&restaurantPageId=66287";
+        //String input = input_edit_text.getText().toString();
+        url = "http://amica.fi/api/restaurant/menu/day?date=" + defaultDate + "&language="+ language + "&restaurantPageId=66287";
 
         adapter = new ArrayAdapter<>(this, R.layout.meal_list, names);
         list_view.setAdapter(adapter);
@@ -173,10 +174,14 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()){
             case R.id.language_english_button:
                 language = "en";
+                v.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
+                v.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
+                language_english_button.getBackground().setColorFilter(null);
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:

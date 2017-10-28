@@ -20,4 +20,11 @@
         <item name="android:textColor">@color/colorBlack</item>
     </style>
 
+    <style name="DatePickerStyle" parent="android:Widget.DatePicker">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:panelColorBackground">@color/colorWhite</item>
+        <item name="android:headerBackground">@drawable/wooden_background</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+    </style>
+
 </resources>

@@ -9,6 +9,7 @@
 
     <TableRow>
         <TextView
+            style="@style/TextViewStyle"
             android:text="Choose date by picking it from calendar."
             android:id="@+id/dialog_label"
             android:textAlignment="center"
@@ -20,10 +21,9 @@
     </TableRow>
     <TableRow>
         <DatePicker
-            android:datePickerMode="calendar"
-            style="@android:style/Widget.Material.DatePicker"
+            style="DatePickerStyle"
             android:id="@+id/date_picker"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </TableRow>
 

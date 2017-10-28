@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -53,19 +54,8 @@ class CustomDialogClass extends Dialog implements
         buttonCancel.setOnClickListener(this);
 
 
-        /*
-        datePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dayOfMonth = datePicker.getDayOfMonth();
-                month = datePicker.getMonth() + 1;
-                year = datePicker.getYear();
-                pickedDate = String.format("%04d-%02d-%02d",year, month, dayOfMonth);
-                Log.d("CDC Date", pickedDate);
-                setSharedPreference("sharedPreferences", "pickedDate", pickedDate);
-            }
-        });
-        */
+        datePicker.setBackgroundColor(Color.WHITE);
+        //datePicker.getBackground().setAlpha(20);
     }
 
     @Override

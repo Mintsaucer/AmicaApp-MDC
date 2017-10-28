@@ -7,14 +7,12 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -123,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         tv_date.setText(defaultDate);
         //input_edit_text.setText(defaultDate);
     }
-
 
     public void checkSelectedLanguage()
     {

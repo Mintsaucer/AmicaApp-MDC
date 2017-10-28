@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     EditText input_edit_text;
 
     String language = "en";
+    String searchText = "Search";
     String defaultDate;
 
     SharedPreferences sharedPreferences;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String MyPREFERENCES = "MyPrefs";
     private final String Lang = "langKey";
+    private final String SearchText = "searchKey";
 
     //JSON Nodes
     private static final String TAG_LUNCHMENU = "LunchMenu";
@@ -196,14 +198,16 @@ public class MainActivity extends AppCompatActivity {
                 language = "en";
                 language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
                 language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
-                search_btn.setText("Search");
+                searchText = "Search";
+                search_btn.setText(searchText);
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
                 language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
                 language_english_button.getBackground().setColorFilter(null);
-                search_btn.setText("Hae");
+                searchText = "Hae";
+                search_btn.setText(searchText);
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
@@ -217,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(Lang, language);
+        edit.putString(SearchText, searchText );
         edit.commit();
     }
 
@@ -225,5 +230,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         language = preferences.getString(Lang, "");
+        searchText = preferences.getString(SearchText, "");
+        search_btn.setText(searchText);
     }
 }

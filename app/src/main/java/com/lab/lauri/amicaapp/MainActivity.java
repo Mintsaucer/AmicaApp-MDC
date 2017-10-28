@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         checkSelectedLanguage();
         getDefaultDate();
         customDialogClass = new CustomDialogClass(this);
-        //customDialogClass.getWindow().setBackgroundDrawable(Color.TRANSPARENT);
+        customDialogClass.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         input_edit_text.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

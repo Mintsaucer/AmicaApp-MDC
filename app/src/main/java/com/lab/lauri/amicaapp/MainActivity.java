@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         progressbar.setVisibility(View.INVISIBLE);
     }
 
-    //Tsekkaa painetun napin ID:n, jonka mukaan asettaa kielen //TODO: Sharedpref, jotta sovellus muistaa asetuksen
+    //Tsekkaa painetun napin ID:n, jonka mukaan asettaa kielen
     public void setLanguage(View v)
     {
         switch (v.getId()){
@@ -196,12 +196,14 @@ public class MainActivity extends AppCompatActivity {
                 language = "en";
                 language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
                 language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                search_btn.setText("Search");
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
                 language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
                 language_english_button.getBackground().setColorFilter(null);
+                search_btn.setText("Hae");
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:

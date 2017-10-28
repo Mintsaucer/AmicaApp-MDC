@@ -1,27 +1,20 @@
 package com.lab.lauri.amicaapp;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -29,17 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 @EActivity
@@ -82,23 +67,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkSelectedLanguage();
+        getDefaultDate();
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.get(Calendar.DATE);
-        //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä
-        int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
-        defaultDate = calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DATE);
-        defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, calendar.get(Calendar.DATE));
-        Log.d("DATE", defaultDate);
-        tv_date.setText(defaultDate);
-        input_edit_text.setText(defaultDate);
-
-        //String input = input_edit_text.getText().toString();
         url = "http://amica.fi/api/restaurant/menu/day?date=" + defaultDate + "&language="+ language + "&restaurantPageId=66287";
 
         adapter = new ArrayAdapter<>(this, R.layout.meal_list, names);
         list_view.setAdapter(adapter);
         new ParseTask().execute(url);
+    }
+
+    public void getDefaultDate()
+    {
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.get(Calendar.DATE);
+        //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä
+        int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
+        int date = calendar.get(Calendar.DATE);
+
+
+        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+        {
+            Log.d("Nyt on", "Lauantai");
+            date = calendar.get(Calendar.DATE) + 2;
+        }
+        else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+        {
+            Log.d("Nyt on", "Sunnuntai");
+            date = calendar.get(Calendar.DATE) + 1;
+        }
+
+        defaultDate = calendar.get(Calendar.YEAR) + "-" + month + "-" + date;
+        defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, date); //Muotoilee päiväyksen Amican Jsoniin sopivaksi
+        Log.d("Default Date", defaultDate);
+        tv_date.setText(defaultDate);
+        input_edit_text.setText(defaultDate);
+    }
+
+    public void checkSelectedLanguage()
+    {
+        SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if(preferences.getString(Lang, "") != null)
+        {
+            language = preferences.getString(Lang, "");
+        }
+
+        switch (language){
+            case "fi":
+                language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                break;
+            case "en":
+                language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                break;
+            default:
+                language_english_button.getBackground().setColorFilter(null);
+                language_finnish_button.getBackground().setColorFilter(null);
+                break;
+        }
     }
 
     public void searchClicked(View view) {
@@ -156,14 +184,6 @@ public class MainActivity extends AppCompatActivity {
     public void print() {
         tv_date.setText(day + " " + date);
         Log.d("listArray size: ", String.valueOf(names.size()));
-
-        /*
-        for (int i = 0; i < names.size(); i++)
-        {
-            // set adapter to listView
-            list_view.setAdapter(adapter);
-        }
-        */
         adapter.notifyDataSetChanged(); // Adapteria täytyy virkistää muutoksen jälkeen, jotta näkymä päivittyy
         progressbar.setVisibility(View.INVISIBLE);
     }
@@ -174,18 +194,18 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()){
             case R.id.language_english_button:
                 language = "en";
-                v.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
                 language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
-                v.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
+                language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
                 language_english_button.getBackground().setColorFilter(null);
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
-                language = "en";
+                //language = "en";
         }
     }
 

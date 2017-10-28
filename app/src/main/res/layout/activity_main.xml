@@ -20,11 +20,10 @@
 </TableLayout>
 
 
-    <TableLayout>
-        <TableRow
-            android:layout_weight="1">
+    <TableLayout
+        android:layout_width="match_parent">
+        <TableRow>
             <Button
-                android:layout_gravity="start"
                 android:background="@drawable/language_english"
                 android:id="@+id/language_english_button"
                 android:layout_width="wrap_content"
@@ -32,7 +31,6 @@
                 android:onClick="setLanguage" />
 
             <Button
-                android:layout_gravity="end"
                 android:background="@drawable/language_finnish"
                 android:id="@+id/language_finnish_button"
                 android:layout_width="wrap_content"

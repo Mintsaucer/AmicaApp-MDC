@@ -2,21 +2,21 @@ package com.lab.lauri.amicaapp;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
-import static android.content.Context.MODE_PRIVATE;
 
 import java.util.Calendar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Luokan on luonut tuomo päivämäärällä 28.10.2017.
@@ -24,7 +24,6 @@ import java.util.Calendar;
 
 class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
-
 
     private DatePicker datePicker;
     private Activity c;
@@ -53,9 +52,48 @@ class CustomDialogClass extends Dialog implements
         buttonCancel = (Button) findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(this);
 
-
+        setDatePickerLimits();
         datePicker.setBackgroundColor(Color.WHITE);
         //datePicker.getBackground().setAlpha(20);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setDatePickerLimits()
+    {
+        Calendar calendar = Calendar.getInstance();
+        long minTime;
+        long maxtime;
+
+        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+        {
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            minTime = calendar.getTimeInMillis();
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            maxtime = calendar.getTimeInMillis();
+        }
+        else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+        {
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            minTime = calendar.getTimeInMillis();
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            maxtime = calendar.getTimeInMillis();
+        }
+        else
+        {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            calendar.set(Calendar.HOUR, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            minTime = calendar.getTimeInMillis();
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            maxtime = calendar.getTimeInMillis();
+        }
+
+        datePicker.setMinDate(minTime);
+        datePicker.setMaxDate(maxtime);
     }
 
     @Override

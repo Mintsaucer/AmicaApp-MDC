@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
-                //language = "en";
+                language = "en";
         }
     }
 

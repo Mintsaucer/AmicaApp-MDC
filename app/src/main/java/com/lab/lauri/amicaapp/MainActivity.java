@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         checkSelectedLanguage();
         getDefaultDate();
         customDialogClass = new CustomDialogClass(this);
+        //customDialogClass.getWindow().setBackgroundDrawable(Color.TRANSPARENT);
         input_edit_text.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -247,6 +248,7 @@ public class MainActivity extends AppCompatActivity {
         input_edit_text.setText(formattedPickedDate);
         url = "http://amica.fi/api/restaurant/menu/day?date=" + formattedPickedDate + "&language="+ language + "&restaurantPageId=66287";
         new ParseTask().execute(url);
+        customDialogClass.dismiss();
     }
 
     @Override

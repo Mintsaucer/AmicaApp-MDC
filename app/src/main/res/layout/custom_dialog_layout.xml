@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_margin="12sp"
+    android:background="@drawable/rectangle_background_drawable"
     >
 
-    <TextView
-        android:text="Choose date by picking it from calendar."
-        android:id="@+id/dialog_label"
-        android:textAlignment="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="25sp"
-        android:textStyle="bold"/>
-
-    <DatePicker
-        android:id="@+id/date_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:text="OK"
-        android:onClick="onButtonOkClicked"
-        android:id="@+id/btn_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:textColor="#5DBCD2"
-        android:textStyle="bold" />
-
-        <Button
-            android:text="cancel"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/btn_cancel"
+    <TableRow>
+        <TextView
+            android:text="Choose date by picking it from calendar."
+            android:id="@+id/dialog_label"
+            android:textAlignment="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:textColor="#5DBCD2"
-            android:textStyle="bold" />
-</LinearLayout>
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+    </TableRow>
+    <TableRow>
+        <DatePicker
+            android:datePickerMode="calendar"
+            style="@android:style/Widget.Material.DatePicker"
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableLayout>
+        <TableRow>
+            <Button
+                android:layout_margin="5sp"
+                style="@style/ButtonStyle"
+                android:text="OK"
+                android:layout_weight="1"
+                android:onClick="onButtonOkClicked"
+                android:id="@+id/btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_margin="5sp"
+                android:layout_weight="1"
+                style="@style/ButtonStyle"
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="cancel"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+</TableLayout>

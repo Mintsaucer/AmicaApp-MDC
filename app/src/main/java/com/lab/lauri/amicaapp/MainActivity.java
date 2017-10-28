@@ -2,14 +2,19 @@ package com.lab.lauri.amicaapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,6 +30,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 @EActivity
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String day, date;
     private String url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";
+    CustomDialogClass customDialogClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         checkSelectedLanguage();
         getDefaultDate();
+        customDialogClass = new CustomDialogClass(this);
+        input_edit_text.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                customDialogClass.show();
+                return true;
+            }
+        });
 
         url = "http://amica.fi/api/restaurant/menu/day?date=" + defaultDate + "&language="+ language + "&restaurantPageId=66287";
 
@@ -79,22 +95,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void getDefaultDate()
     {
-
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.get(Calendar.DATE);
-        //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä
+        //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä (Ilmeisesti koska kuukaudet on ilmoitettu 0-11)
         int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
         int date = calendar.get(Calendar.DATE);
 
 
         if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
         {
-            Log.d("Nyt on", "Lauantai");
+            Locale locale = Locale.getDefault(); //Hakee kieliasetuksen mukaan
+            Log.d("Locale", String.valueOf(locale));
+            Log.d("Nyt on", "Lauantai"); //Viikonloppuna amican JSON ei toimi
             date = calendar.get(Calendar.DATE) + 2;
+            //date = calendar.get(Calendar.getInstance())
         }
         else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
         {
-            Log.d("Nyt on", "Sunnuntai");
+            Log.d("Nyt on", "Sunnuntai"); //Viikonloppuna amican JSON ei toimi
             date = calendar.get(Calendar.DATE) + 1;
         }
 
@@ -102,8 +120,9 @@ public class MainActivity extends AppCompatActivity {
         defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, date); //Muotoilee päiväyksen Amican Jsoniin sopivaksi
         Log.d("Default Date", defaultDate);
         tv_date.setText(defaultDate);
-        input_edit_text.setText(defaultDate);
+        //input_edit_text.setText(defaultDate);
     }
+
 
     public void checkSelectedLanguage()
     {
@@ -196,14 +215,14 @@ public class MainActivity extends AppCompatActivity {
                 language = "en";
                 language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
                 language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
-                search_btn.setText("Search");
+                search_btn.setText("Search"); //TODO: vaihtaa values -> EN
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
                 language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
                 language_english_button.getBackground().setColorFilter(null);
-                search_btn.setText("Hae");
+                search_btn.setText("Hae"); //TODO: vaihtaa values -> FI
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
@@ -217,7 +236,17 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(Lang, language);
-        edit.commit();
+        edit.apply(); //commit();
+    }
+
+    public void onButtonOkClicked(View v)
+    {
+        String formattedPickedDate = String.format("%04d-%02d-%02d",customDialogClass.getYear(), customDialogClass.getMonth(), customDialogClass.getDayOfMonth());
+        names.clear(); //Tyhjennetään lista, jotta sen voi päivittää
+        //String sentDate = getSharedPreferences("sharedPreferences", "pickedDate");
+        input_edit_text.setText(formattedPickedDate);
+        url = "http://amica.fi/api/restaurant/menu/day?date=" + formattedPickedDate + "&language="+ language + "&restaurantPageId=66287";
+        new ParseTask().execute(url);
     }
 
     @Override
@@ -225,5 +254,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         language = preferences.getString(Lang, "");
+    }
+
+    //Metodi, jolla voi hakea jaetun String -muuttujan
+    private String getSharedPreferences(String sharedPrefTag, String sharedVariableTag)
+    {
+        SharedPreferences pref = this.getSharedPreferences(sharedPrefTag, MODE_PRIVATE);
+        return pref.getString(sharedVariableTag, null);
     }
 }

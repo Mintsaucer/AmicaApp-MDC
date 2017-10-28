@@ -3,6 +3,8 @@ package com.lab.lauri.amicaapp;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,8 +58,13 @@ public class MainActivity extends AppCompatActivity {
     String language = "en";
     String defaultDate;
 
+    SharedPreferences sharedPreferences;
+
     private ArrayList<String> names = new ArrayList<>();
     private ArrayAdapter adapter;
+
+    private final String MyPREFERENCES = "MyPrefs";
+    private final String Lang = "langKey";
 
     //JSON Nodes
     private static final String TAG_LUNCHMENU = "LunchMenu";
@@ -175,5 +182,21 @@ public class MainActivity extends AppCompatActivity {
             default:
                 language = "en";
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(Lang, language);
+        edit.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        language = preferences.getString(Lang, "");
     }
 }

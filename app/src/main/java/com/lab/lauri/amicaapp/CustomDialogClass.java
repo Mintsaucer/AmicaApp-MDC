@@ -40,9 +40,7 @@ class CustomDialogClass extends Dialog implements
         datePicker = (DatePicker) findViewById(R.id.date_picker);
         buttonCancel = (Button) findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(this);
-
         setDatePickerLimits();
-        datePicker.setBackgroundColor(Color.WHITE);
         //datePicker.getBackground().setAlpha(20);
     }
 

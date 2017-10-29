@@ -19,10 +19,9 @@
             android:textStyle="bold"/>
     </TableRow>
     <TableRow>
+
         <DatePicker
-            android:calendarTextColor="@color/colorWhite"
-            android:yearListSelectorColor="@color/colorWhite"
-            style="@style/DatePickerStyle"
+            style="@style/datepicker"
             android:id="@+id/date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

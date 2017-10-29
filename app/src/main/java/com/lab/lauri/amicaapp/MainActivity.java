@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_MEALS = "Meals";
     private static final String TAG_NAME = "Name";
     private static final String TAG_RECIPEID = "RecipeId";
+    private static final String TAG_SORTORDER = "SortOrder";
 
     private String day, date;
     private String url = "http://amica.fi/api/restaurant/menu/day?date=2017-10-10&language=en&restaurantPageId=66287";

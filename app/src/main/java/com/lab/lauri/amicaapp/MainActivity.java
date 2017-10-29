@@ -99,19 +99,23 @@ public class MainActivity extends AppCompatActivity {
     {
         //Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.get(Calendar.DATE);
         //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä (Ilmeisesti koska kuukaudet on ilmoitettu 0-11)
         int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
         int date = calendar.get(Calendar.DATE);
 
-        //Toteutuu jos on viikonloppu -> siirrytään seuraavan viikon maanantaihin
-        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
-        {
-            calendar.add(Calendar.WEEK_OF_YEAR, 1);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            Log.d("Nyt on", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK))); //Viikonloppuna amican JSON ei toimi
-            date = calendar.get(Calendar.DATE);
-        }
+        Log.d("Kieli", Locale.getDefault().getDisplayLanguage());
+
+
+            //Toteutuu jos on viikonloppu -> siirrytään seuraavan viikon maanantaihin
+            if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+            {
+                calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                Log.d("Nyt on", String.valueOf(calendar.get(Calendar.DAY_OF_WEEK))); //Viikonloppuna amican JSON ei toimi
+                date = calendar.get(Calendar.DATE);
+            }
 
         defaultDate = calendar.get(Calendar.YEAR) + "-" + month + "-" + date;
         defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, date); //Muotoilee päiväyksen Amican Jsoniin sopivaksi

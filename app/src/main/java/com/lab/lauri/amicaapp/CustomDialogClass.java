@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -47,35 +48,37 @@ class CustomDialogClass extends Dialog implements
     private void setDatePickerLimits()
     {
         Calendar calendar = Calendar.getInstance();
-        long minTime;
-        long maxtime;
+        long minTime = 0;
+        long maxtime = 0;
 
-        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+        if(Locale.getDefault().getDisplayLanguage().equals("suomi"))
         {
-            calendar.add(Calendar.WEEK_OF_YEAR, 1);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            minTime = calendar.getTimeInMillis();
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-            maxtime = calendar.getTimeInMillis();
+            if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+            {
+                calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                minTime = calendar.getTimeInMillis();
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                maxtime = calendar.getTimeInMillis();
+            }
+            else
+            {
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                calendar.set(Calendar.HOUR, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                minTime = calendar.getTimeInMillis();
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                maxtime = calendar.getTimeInMillis();
+            }
         }
-        else if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+        else if(Locale.getDefault().getDisplayLanguage().equals("English"))
         {
-            calendar.add(Calendar.WEEK_OF_YEAR, 1);
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            minTime = calendar.getTimeInMillis();
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-            maxtime = calendar.getTimeInMillis();
-        }
-        else
-        {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-            calendar.set(Calendar.HOUR, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            minTime = calendar.getTimeInMillis();
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
-            maxtime = calendar.getTimeInMillis();
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                minTime = calendar.getTimeInMillis();
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+                maxtime = calendar.getTimeInMillis();
         }
 
         datePicker.setMinDate(minTime);

@@ -10,13 +10,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class JSONParser {
+class JSONParser {
 
-    public JSONParser() {
+    JSONParser() {
     }
 
     // HTTP request
-    public JSONObject getJSONObjectFromURL(String urls) throws IOException, JSONException {
+    JSONObject getJSONObjectFromURL(String urls) throws IOException, JSONException {
         HttpURLConnection urlConnection = null;
         URL url = new URL(urls);
         urlConnection = (HttpURLConnection) url.openConnection();
@@ -31,7 +31,7 @@ public class JSONParser {
 
         String line;
         while ((line = br.readLine()) != null) {
-            sb.append(line + "\n");
+            sb.append(line).append("\n");
         }
         br.close();
 

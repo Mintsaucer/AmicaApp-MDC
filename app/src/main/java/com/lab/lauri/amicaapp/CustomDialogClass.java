@@ -1,18 +1,16 @@
 package com.lab.lauri.amicaapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 
 import java.util.Calendar;
 
@@ -27,16 +25,7 @@ class CustomDialogClass extends Dialog implements
 
     private DatePicker datePicker;
     private Activity c;
-    public Dialog d;
     private Button buttonCancel, buttonOk;
-
-
-    private int dayOfMonth;
-    private int month;
-    private int year;
-    private String pickedDate;
-
-    EditText editText;
 
     CustomDialogClass(Activity a) {
         super(a);
@@ -57,7 +46,6 @@ class CustomDialogClass extends Dialog implements
         //datePicker.getBackground().setAlpha(20);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setDatePickerLimits()
     {
         Calendar calendar = Calendar.getInstance();
@@ -96,18 +84,18 @@ class CustomDialogClass extends Dialog implements
         datePicker.setMaxDate(maxtime);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel:
-                //Toast.makeText(c.getApplicationContext(),c.getResources().getString(R.string.support_text), Toast.LENGTH_LONG).show();
+
+                break;
+            case R.id.btn_ok:
+
+                break;
             case R.id.date_picker:
-                dayOfMonth = datePicker.getDayOfMonth();
-                month = datePicker.getMonth() + 1;
-                year = datePicker.getYear();
-                pickedDate = String.format("%04d-%02d-%02d",year, month, dayOfMonth);
-                setSharedPreference("sharedPreferences", "pickedDate", pickedDate);
-                Log.d("CDC Date", pickedDate);
+
                 break;
             default:
                 break;

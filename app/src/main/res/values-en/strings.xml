@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AmicaApp</string>
+    <string name="restaurant_kotkanpoika">Restaurant Kotkanpoika</string>
+    <string name="search">Search</string>
+    <string name="yy_mm_dd">YYYY-MM-DD</string>
+</resources>

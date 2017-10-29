@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("DefaultLocale")
     public void getDefaultDate()
     {
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        //Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.DATE);
         //TODO: korjaa kuukauden hakeminen, nykyinen metodi palauttaa kuukauden numeroa liian pienenä (Ilmeisesti koska kuukaudet on ilmoitettu 0-11)
         int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             try {
                 JSONParser jParser = new JSONParser();
-                JSONObject json = null;
+                JSONObject json;
 
                 json = jParser.getJSONObjectFromURL(url);
                 JSONObject mainObject = json.getJSONObject(TAG_LUNCHMENU);
@@ -171,11 +172,28 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray meals = jsonMeals.getJSONArray(TAG_MEALS);
                     Log.d("JSON meals",  meals.toString());
 
+                    String sortOrder = jsonMeals.getString(TAG_SORTORDER);
+                    String menuName = jsonMeals.getString("Name");
+
+                    Log.d("SortOrder", sortOrder);
+
                     for (int j = 0; j < meals.length(); j++) {
                         JSONObject jsonNames = meals.getJSONObject(j);
                         String name = String.valueOf(jsonNames.getString(TAG_NAME));
-                        names.add(name);
-                        Log.d("JSON names", names.get(j));
+
+                        //TESTI
+                        int recipeId = (int) jsonNames.get(TAG_RECIPEID);
+                        Log.d("recipeId", String.valueOf(recipeId));
+                        //END
+
+                        if(recipeId > -1)
+                        {
+                            names.add(name);
+                        }
+                        else if(recipeId == -1)
+                        {
+                            names.set(names.size() - 1,names.get(names.size() -1)+ "\nlisuke: " + name );
+                        }
                     }
                 }
             } catch (IOException | JSONException e) {
@@ -214,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 language_finnish_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
                 language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 search_btn.setText("Search"); //TODO: vaihtaa values -> EN
-                updateResources(this, "en_US");
+                //updateResources(this, "en_US");
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
@@ -222,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 language_english_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP);
                 language_finnish_button.getBackground().setColorFilter(null);
                 search_btn.setText("Hae"); //TODO: vaihtaa values -> FI
-                updateResources(this, "fi_FI");
+                //updateResources(this, "fi_FI");
                 Log.d("Kieliasetus", "Suomi");
                 break;
             default:
@@ -253,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
         progressbar.setVisibility(View.VISIBLE);
         @SuppressLint("DefaultLocale") String formattedPickedDate = String.format("%04d-%02d-%02d",customDialogClass.getYear(), customDialogClass.getMonth(), customDialogClass.getDayOfMonth());
         names.clear(); //Tyhjennetään lista, jotta sen voi päivittää
+        adapter.notifyDataSetChanged();
         url = "http://amica.fi/api/restaurant/menu/day?date=" + formattedPickedDate + "&language="+ language + "&restaurantPageId=66287";
         new ParseTask().execute(url);
         customDialogClass.dismiss();

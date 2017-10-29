@@ -51,6 +51,17 @@ class CustomDialogClass extends Dialog implements
         long minTime = 0;
         long maxtime = 0;
 
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
+        {
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            minTime = calendar.getTimeInMillis();
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            maxtime = calendar.getTimeInMillis();
+        }
+
+        /*
         if(Locale.getDefault().getDisplayLanguage().equals("suomi"))
         {
             if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
@@ -75,11 +86,13 @@ class CustomDialogClass extends Dialog implements
         }
         else if(Locale.getDefault().getDisplayLanguage().equals("English"))
         {
+                //calendar.setFirstDayOfWeek(Calendar.MONDAY);
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 minTime = calendar.getTimeInMillis();
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
                 maxtime = calendar.getTimeInMillis();
         }
+        */
 
         datePicker.setMinDate(minTime);
         datePicker.setMaxDate(maxtime);

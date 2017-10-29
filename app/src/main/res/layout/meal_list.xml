@@ -3,10 +3,11 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_view_tv"
+    android:textColor="@color/colorWhite"
     android:padding="10dp"
     android:textSize="25sp"
     android:textStyle="bold"
-    android:background="@drawable/rounded_corner"
+    android:background="@drawable/rectangle_background_drawable"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 </TextView>

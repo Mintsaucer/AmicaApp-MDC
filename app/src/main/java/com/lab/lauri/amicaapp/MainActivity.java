@@ -80,9 +80,13 @@ public class MainActivity extends AppCompatActivity {
         getDefaultDate();
         customDialogClass = new CustomDialogClass(this);
         customDialogClass.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //Hakee default ruokalistan sovelluksen avautuessa (nykyinen päivä / viikonloppuna seuraava maanantai)
+        getDefaultMealList();
+    }
 
+    public void getDefaultMealList()
+    {
         url = "http://amica.fi/api/restaurant/menu/day?date=" + defaultDate + "&language="+ language + "&restaurantPageId=66287";
-
         adapter = new ArrayAdapter<>(this, R.layout.meal_list, names);
         list_view.setAdapter(adapter);
         new ParseTask().execute(url);
@@ -97,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH) + 1 ; //Purkkakorjaus
         int date = calendar.get(Calendar.DATE);
 
-
         //Toteutuu jos on viikonloppu -> siirrytään seuraavan viikon maanantaihin
         if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
         {
@@ -111,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         defaultDate = String.format("%04d-%02d-%02d",calendar.get(Calendar.YEAR), month, date); //Muotoilee päiväyksen Amican Jsoniin sopivaksi
         Log.d("Default Date", defaultDate);
         tv_date.setText(defaultDate);
-        //input_edit_text.setText(defaultDate);
     }
 
     public void checkSelectedLanguage()
@@ -121,16 +123,17 @@ public class MainActivity extends AppCompatActivity {
 
         switch (language){
             case "fi":
-                language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
-                language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                language_english_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP);
+                language_finnish_button.getBackground().setColorFilter(null);
                 break;
             case "en":
-                language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
-                language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                language_finnish_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 break;
             default:
-                language_english_button.getBackground().setColorFilter(null);
-                language_finnish_button.getBackground().setColorFilter(null);
+                language = "en";
+                language_finnish_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 break;
         }
     }
@@ -206,16 +209,16 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId()){
             case R.id.language_english_button:
                 language = "en";
-                language_english_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
-                language_finnish_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
+                language_finnish_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP); //Vaihtaa upean oranssin värin klikattuun nappulaan
+                language_english_button.getBackground().setColorFilter(null); //Ottaa filtterin pois toisesta nappulasta
                 search_btn.setText("Search"); //TODO: vaihtaa values -> EN
                 updateResources(this, "en_US");
                 Log.d("Kieliasetus", "Englanti");
                 break;
             case R.id.language_finnish_button:
                 language = "fi";
-                language_finnish_button.getBackground().setColorFilter(0xe0f47521,PorterDuff.Mode.SRC_ATOP);
-                language_english_button.getBackground().setColorFilter(null);
+                language_english_button.getBackground().setColorFilter(0xe9999999,PorterDuff.Mode.SRC_ATOP);
+                language_finnish_button.getBackground().setColorFilter(null);
                 search_btn.setText("Hae"); //TODO: vaihtaa values -> FI
                 updateResources(this, "fi_FI");
                 Log.d("Kieliasetus", "Suomi");
@@ -248,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
         progressbar.setVisibility(View.VISIBLE);
         @SuppressLint("DefaultLocale") String formattedPickedDate = String.format("%04d-%02d-%02d",customDialogClass.getYear(), customDialogClass.getMonth(), customDialogClass.getDayOfMonth());
         names.clear(); //Tyhjennetään lista, jotta sen voi päivittää
-        //String sentDate = getSharedPreferences("sharedPreferences", "pickedDate");
         url = "http://amica.fi/api/restaurant/menu/day?date=" + formattedPickedDate + "&language="+ language + "&restaurantPageId=66287";
         new ParseTask().execute(url);
         customDialogClass.dismiss();

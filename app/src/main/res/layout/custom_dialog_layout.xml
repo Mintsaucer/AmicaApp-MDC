@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="12sp"
+    android:layout_margin="15sp"
     android:background="@drawable/rectangle_background_drawable"
     >
 
@@ -20,7 +20,9 @@
     </TableRow>
     <TableRow>
         <DatePicker
-            style="DatePickerStyle"
+            android:calendarTextColor="@color/colorWhite"
+            android:yearListSelectorColor="@color/colorWhite"
+            style="@style/DatePickerStyle"
             android:id="@+id/date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

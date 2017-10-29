@@ -21,11 +21,14 @@
         android:id="@+id/textView" />
 </TableLayout>
 
-
     <TableLayout
-        android:layout_width="match_parent">
-        <TableRow>
+        android:layout_margin="10sp">
+        <TableRow
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_background_drawable"
+            android:layout_width="match_parent">
             <Button
+                android:layout_gravity="end"
                 android:background="@drawable/language_english"
                 android:id="@+id/language_english_button"
                 android:layout_width="wrap_content"
@@ -33,6 +36,7 @@
                 android:onClick="setLanguage" />
 
             <Button
+                android:layout_gravity="end"
                 android:background="@drawable/language_finnish"
                 android:id="@+id/language_finnish_button"
                 android:layout_width="wrap_content"
@@ -40,6 +44,7 @@
                 android:onClick="setLanguage" />
         </TableRow>
     </TableLayout>
+
 
     <TableRow
         android:background="@drawable/rectangle_background_drawable"
@@ -67,8 +72,9 @@
     </TableRow>
 
 
-<TableLayout>
-
+<TableLayout
+    android:layout_margin="10sp"
+    >
     <ListView
         android:layout_marginBottom="25sp"
         android:textAlignment="center"
